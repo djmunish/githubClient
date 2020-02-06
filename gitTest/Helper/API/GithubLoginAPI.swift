@@ -111,5 +111,22 @@ class GithubLoginAPI {
             }
         }
     }
+    
+    func getPullRequests(accesstoken:String, ownerName : String, repoName : String, branch: String, completion: @escaping([PullRequestResponse]?, Error?) -> Void){
+        let url = "https://api.github.com/repos/\(ownerName)/\(repoName)/pulls?access_token=\(accesstoken)&state=all&base=\(branch)"
+        self.get(url: url, parameters: nil, headers: nil) { (data, _, error) in
+            if let data = data {
+                do {
+                    let model = try JSONDecoder().decode([PullRequestResponse].self, from: data)
+                    completion(model, error)
+                } catch {
+                    completion(nil, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
 
 }

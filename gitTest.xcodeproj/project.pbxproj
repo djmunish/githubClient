@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58042EF623EBD6E0003A35E0 /* PullRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58042EF523EBD6E0003A35E0 /* PullRequestVC.swift */; };
+		58042EF823EBD905003A35E0 /* PullRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58042EF723EBD905003A35E0 /* PullRequestCell.swift */; };
+		58042EFA23EBD9F3003A35E0 /* PullRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58042EF923EBD9F3003A35E0 /* PullRequestResponse.swift */; };
 		588BC94623E9FD5B00AEF16F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588BC94523E9FD5B00AEF16F /* AppDelegate.swift */; };
 		588BC94823E9FD5B00AEF16F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588BC94723E9FD5B00AEF16F /* SceneDelegate.swift */; };
 		588BC94A23E9FD5B00AEF16F /* RepositoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588BC94923E9FD5B00AEF16F /* RepositoryVC.swift */; };
@@ -53,6 +56,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		58042EF523EBD6E0003A35E0 /* PullRequestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullRequestVC.swift; sourceTree = "<group>"; };
+		58042EF723EBD905003A35E0 /* PullRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullRequestCell.swift; sourceTree = "<group>"; };
+		58042EF923EBD9F3003A35E0 /* PullRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullRequestResponse.swift; sourceTree = "<group>"; };
 		588BC94223E9FD5B00AEF16F /* gitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		588BC94523E9FD5B00AEF16F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		588BC94723E9FD5B00AEF16F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -188,9 +194,10 @@
 		58E2196C23EA356F0059899B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				588BC94923E9FD5B00AEF16F /* RepositoryVC.swift */,
 				58E219B223EA3A9C0059899B /* LoginWebVC.swift */,
+				588BC94923E9FD5B00AEF16F /* RepositoryVC.swift */,
 				58DB5BB723EB5B1A00AFCAAA /* BranchVC.swift */,
+				58042EF523EBD6E0003A35E0 /* PullRequestVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -220,6 +227,7 @@
 				58DB5BB523EB59CF00AFCAAA /* BranchReponse.swift */,
 				58DB5BBD23EB65F800AFCAAA /* LastCommit.swift */,
 				58DB5BBB23EB63A300AFCAAA /* CommitResponse.swift */,
+				58042EF923EBD9F3003A35E0 /* PullRequestResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,6 +250,7 @@
 			children = (
 				58E219C423EB33BF0059899B /* RepositoryCell.swift */,
 				58DB5BB923EB5F4F00AFCAAA /* BranchCell.swift */,
+				58042EF723EBD905003A35E0 /* PullRequestCell.swift */,
 			);
 			path = "TableView Cells";
 			sourceTree = "<group>";
@@ -382,13 +391,16 @@
 				588BC94A23E9FD5B00AEF16F /* RepositoryVC.swift in Sources */,
 				58E219C523EB33BF0059899B /* RepositoryCell.swift in Sources */,
 				58DB5BBC23EB63A300AFCAAA /* CommitResponse.swift in Sources */,
+				58042EF823EBD905003A35E0 /* PullRequestCell.swift in Sources */,
 				58E219C023EB2FB50059899B /* RepositoryLicense.swift in Sources */,
 				58DB5BBE23EB65F800AFCAAA /* LastCommit.swift in Sources */,
 				58E219C223EB2FB50059899B /* RepositoryOwner.swift in Sources */,
+				58042EF623EBD6E0003A35E0 /* PullRequestVC.swift in Sources */,
 				58E219BE23EB2FB50059899B /* RepositoryPermission.swift in Sources */,
 				58DB5BBA23EB5F4F00AFCAAA /* BranchCell.swift in Sources */,
 				58DB5BB623EB59CF00AFCAAA /* BranchReponse.swift in Sources */,
 				58E219B323EA3A9C0059899B /* LoginWebVC.swift in Sources */,
+				58042EFA23EBD9F3003A35E0 /* PullRequestResponse.swift in Sources */,
 				58E2197523EA38DE0059899B /* Request.swift in Sources */,
 				58E219BF23EB2FB50059899B /* RepositoryParent.swift in Sources */,
 				58DB5BC423EB820500AFCAAA /* PopupView.swift in Sources */,

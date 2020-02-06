@@ -93,7 +93,8 @@ extension RepositoryVC: UITableViewDelegate, UITableViewDataSource {
         cell.repoName.text = repo.fullName
         cell.repoTypeIcon.image = repo.privateField ?? false ? #imageLiteral(resourceName: "lock") : #imageLiteral(resourceName: "open")
         cell.forkIcon.isHidden = repo.fork ?? false ? false : true
-//        cell.delegate = self
+        cell.userImg.load(url: repo.owner?.avatarUrl ?? "")
+        //        cell.delegate = self
         return cell
     }
     

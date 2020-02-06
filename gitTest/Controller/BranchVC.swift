@@ -54,6 +54,15 @@ class BranchVC: UIViewController {
         detailPopup.shaLbl.text = commit.sha
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "PullSegue") {
+            let destinationViewController = (segue.destination as! PullRequestVC)
+            destinationViewController.accessToken = accessToken
+            destinationViewController.repo = repo
+            destinationViewController.branch = sender as! BranchResponse
+        }
+    }
+    
     /*
      // MARK: - Navigation
      
@@ -79,9 +88,9 @@ extension BranchVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let branch = self.branches[indexPath.row]
-//        self.performSegue(withIdentifier: "BranchSegue", sender: BranchSegue)
-
+        let branch = self.branches[indexPath.row]
+        self.performSegue(withIdentifier: "PullSegue", sender: branch)
+        
     }
 }
 extension BranchVC: BranchCellDelegate {

@@ -14,8 +14,10 @@ class RepositoryCell: UITableViewCell {
     @IBOutlet weak var repoName: UILabel!
     @IBOutlet weak var repoTypeIcon: UIImageView!
     @IBOutlet weak var forkIcon: UIImageView!
+    @IBOutlet weak var userImg: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
+        userImg.image = #imageLiteral(resourceName: "user")
         // Initialization code
     }
 

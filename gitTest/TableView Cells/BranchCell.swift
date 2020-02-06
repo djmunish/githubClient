@@ -33,3 +33,18 @@ class BranchCell: UITableViewCell {
     }
     
 }
+
+extension UIImageView {
+    func load(url: String) {
+        guard let link = URL(string: url) else { return  }
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: link) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
+}
