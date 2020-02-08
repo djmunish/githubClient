@@ -21,14 +21,26 @@ class BranchVC: UIViewController {
     var branches: [BranchResponse] = []
     var repo:RepositoryResponse!
     var accessToken:String!
+    var refreshControl = UIRefreshControl()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchBranches()
         detailPopup.delegate = self
         // Do any additional setup after loading the view.
+        let attributedStringColor = [NSAttributedString.Key.foregroundColor : UIColor.black]
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributedStringColor)
+        
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        tableView.addSubview(refreshControl)
+        // Do any additional setup after loading the view.
+    }
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.refreshControl.endRefreshing()
+        fetchBranches()
     }
     func fetchBranches(){
-        GithubLoginAPI().getBranches(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "") { (response, err) in
+        GithubAPI.gitClient.getBranches(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "") { (response, err) in
             self.branches = response ?? []
             DispatchQueue.main.async {
                 self.activityLoader.stopAnimating()
@@ -40,7 +52,7 @@ class BranchVC: UIViewController {
     func fetchLastCommit(branch: BranchResponse) {
         detailPopup.isHidden = false
         detailPopup.loader.startAnimating()
-        GithubLoginAPI().getLastCommit(accesstoken: accessToken, url: branch.commit?.url ?? "") { (commit, err) in
+        GithubAPI.gitClient.getLastCommit(accesstoken: accessToken, url: branch.commit?.url ?? "") { (commit, err) in
             DispatchQueue.main.async {
                 self.updatePopup(commit: commit!)
             }
@@ -74,6 +86,7 @@ class BranchVC: UIViewController {
      */
     
 }
+//MARK: - Tableview Datasource and Delegate
 extension BranchVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.branches.count
@@ -90,7 +103,8 @@ extension BranchVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let branch = self.branches[indexPath.row]
         self.performSegue(withIdentifier: "PullSegue", sender: branch)
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+
     }
 }
 extension BranchVC: BranchCellDelegate {

@@ -41,6 +41,10 @@ class PopupView: UIView {
         Bundle.main.loadNibNamed(kCONTENT_XIB_NAME, owner: self, options: nil)
         addSubview(contentView)
         contentView.frame = self.bounds
+        messageLblPlcHolder.textColor = UIColor(named: "LabelText")
+        shaLblPlcHolder.textColor = UIColor(named: "LabelText")
+        messageLbl.textColor = UIColor(named: "LabelText")
+        shaLbl.textColor = UIColor(named: "LabelText")
     }
     
     func showData(){

@@ -7,7 +7,8 @@
 
 import Foundation
 
-class GithubLoginAPI {
+class GithubAPI {
+    static let gitClient = GithubAPI()
     enum Parameters: String {
         case clientID = "client_id"
         case clientSecret = "client_secret"
@@ -17,7 +18,10 @@ class GithubLoginAPI {
     public typealias BaseAPICompletion = (Data?, URLResponse?, Error?) -> Swift.Void
     var session: URLSession
     public init() {
-        self.session = URLSession(configuration: URLSessionConfiguration.default)
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        self.session = URLSession(configuration: config)
     }
     
     public init(session: URLSession) {
@@ -39,8 +43,6 @@ class GithubLoginAPI {
             if let data = data {
                 do {
                     let model = try JSONDecoder().decode(AccessTokenResponse.self, from: data)
-                    let json = try? JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
                     completion(model, error)
                 } catch {
                     completion(nil, error)
@@ -128,5 +130,62 @@ class GithubLoginAPI {
         }
     }
     
+    func updatePRStatus(accesstoken:String, ownerName : String, repoName : String, prNumber: Int, completion: @escaping(PullRequestUpdateResponse?, Error?) -> Void){
+        let url = "https://api.github.com/repos/\(ownerName)/\(repoName)/pulls/\(String(describing: prNumber))/merge"
+        
+        self.put(url: url, headers: ["Authorization" : "Bearer \(accesstoken)"]) { (data, _, error) in
+            if let data = data {
+                do {
+                    let model = try JSONDecoder().decode(PullRequestUpdateResponse.self, from: data)
+                    completion(model, error)
+                } catch {
+                    completion(nil, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func rejectPRStatus(accesstoken:String, ownerName : String, repoName : String, prNumber: Int, completion: @escaping(RejectPullRequestResponse?, Error?) -> Void){
+        let url = "https://api.github.com/repos/\(ownerName)/\(repoName)/pulls/\(String(describing: prNumber))?state=closed"
+        
+        self.patch(url: url, headers: ["Authorization" : "Bearer \(accesstoken)"]) { (data, _, error) in
+            if let data = data {
+                do {
+                    let model = try JSONDecoder().decode(RejectPullRequestResponse.self, from: data)
+//                    let json = try? JSONSerialization.jsonObject(with: data, options: [])
+//                    print(json)
+                    completion(model, error)
+                } catch {
+                    completion(nil, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    public func put(url: String, parameters: [String : String]? = nil, headers: [String: String]? = nil, completion: @escaping BaseAPICompletion) {
+        let request = Request(url: url, method: .PUT, parameters: parameters, headers: headers, body: nil)
+        let buildRequest = request.request()
+        if let urlRequest = buildRequest.request {
+            let task = session.dataTask(with: urlRequest, completionHandler: completion)
+            task.resume()
+        } else {
+            completion(nil, nil, buildRequest.error)
+        }
+    }
+    
+    public func patch(url: String, parameters: [String : String]? = nil, headers: [String: String]? = nil, completion: @escaping BaseAPICompletion) {
+        let request = Request(url: url, method: .PATCH, parameters: parameters, headers: headers, body: nil)
+        let buildRequest = request.request()
+        if let urlRequest = buildRequest.request {
+            let task = session.dataTask(with: urlRequest, completionHandler: completion)
+            task.resume()
+        } else {
+            completion(nil, nil, buildRequest.error)
+        }
+    }
 
 }

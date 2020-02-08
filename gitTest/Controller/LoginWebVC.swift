@@ -10,7 +10,8 @@ import UIKit
 import WebKit
 
 class LoginWebVC: UIViewController {
-    
+    @IBOutlet weak var loader: UIActivityIndicatorView!
+
     private var completion: ((String) -> Void)! = nil
     private var error: ((Error) -> Void)! = nil
     
@@ -65,9 +66,11 @@ extension LoginWebVC: WKNavigationDelegate {
  
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         self.dismiss(animated: true)
+        loader.stopAnimating()
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        loader.stopAnimating()
         guard let urlString = webView.url?.absoluteString else { return }
         guard let urlComponents = URLComponents(string: urlString) else { return }
         
@@ -81,7 +84,7 @@ extension LoginWebVC: WKNavigationDelegate {
         
         guard let code = queryItem.value else { return }
         
-        GithubLoginAPI().getAccessToken(clientID: clientID, clientSecret: clientSecret, code: code, redirectURL: redirectURL) { [weak self] (response, error) in
+        GithubAPI.gitClient.getAccessToken(clientID: clientID, clientSecret: clientSecret, code: code, redirectURL: redirectURL) { [weak self] (response, error) in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if let response = response {

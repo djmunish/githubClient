@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import WebKit
+
 public enum Scopes : String {
     case user = "user"
     case userEmail = "user:email"
@@ -34,44 +36,61 @@ public enum Scopes : String {
     case adminGPGKey = "admin:gpg_key"
 }
 class RepositoryVC: UIViewController {
-    var token: String! = nil
+    var token: String! = UserDefaults.standard.value(forKey: "gitToken") as? String ?? ""
     var repos: [RepositoryResponse] = []
 
-   @IBOutlet var tableView: UITableView! {
-         didSet {
-             tableView.delegate = self
-             tableView.dataSource = self
-         }
-     }
+    @IBOutlet weak var loaderView: Loader!
+    @IBOutlet weak var logoutItem: UIBarButtonItem!
+    @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet var tableView: UITableView! {
+        didSet {
+            tableView.delegate = self
+            tableView.dataSource = self
+        }
+    }
+    var refreshControl = UIRefreshControl()
+    @IBOutlet weak var logoutBarBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-       
-//        self.webView.isHidden = true
+        if !token.isEmpty {
+            loaderView.isHidden = false
+            self.loaderView.loaderMessage(message: "Fetching Repo...")
+            fetchRepos(accessToken: token)
+            updateLogoutBtn()
+        }
+        else{
+            loginBtn.isHidden = false
+            loaderView.isHidden = true
+        }
+        
+        let attributedStringColor = [NSAttributedString.Key.foregroundColor : UIColor.black]
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributedStringColor)
+        
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        tableView.addSubview(refreshControl)
+        
+        // Do any additional setup after loading the view.
     }
-
-    @IBAction func loginAction(_ sender: Any) {
-        let loginWeb = self.storyboard?.instantiateViewController(withIdentifier: "LoginWebVC") as! LoginWebVC
-        loginWeb.login(completion: { accessToken in
-            self.token = accessToken
-            self.fetchRepos(accessToken: self.token)
-        }, error: { error in
-            print(error.localizedDescription)
-        })
-        self.present(loginWeb, animated: true, completion: nil)
-    }
+  
     
+    //MARK: - API
     func fetchRepos(accessToken: String){
-        GithubLoginAPI().getRepos(accesstoken: accessToken) { (response, err) in
+        print("ac Token---->\(accessToken)")
+        GithubAPI.gitClient.getRepos(accesstoken: accessToken) { (response, err) in
             self.repos = response ?? []
             DispatchQueue.main.async {
+                if self.loaderView.activityLoader.isAnimating{
+                    self.loaderView.isHidden = true
+                }
                 self.tableView.reloadData()
                 self.tableView.isHidden = false
             }
         }
     }
     
+    //MARK: - Prepare Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "BranchSegue") {
             let destinationViewController = (segue.destination as! BranchVC)
@@ -79,9 +98,60 @@ class RepositoryVC: UIViewController {
             destinationViewController.repo = sender as! RepositoryResponse
         }
     }
+    
+    //MARK: - Button Actions
+    @IBAction func loginAction(_ sender: Any) {
+        let loginWeb = self.storyboard?.instantiateViewController(withIdentifier: "LoginWebVC") as! LoginWebVC
+        loginWeb.login(completion: { accessToken in
+            self.token = accessToken
+            UserDefaults.standard.setValue(accessToken, forKey: "gitToken")
+            self.fetchRepos(accessToken: self.token)
+            self.updateLogoutBtn()
 
+        }, error: { error in
+            print(error.localizedDescription)
+        })
+        self.present(loginWeb, animated: true, completion: nil)
+    }
+    
+    @IBAction func logout(_ sender: Any) {
+        UIViewController.displayAlertController(title: "Logout", message: "Are you sure you want to logout?", buttonTitle: ["No", "Yes"]){ (index) in
+            if index == 1{
+                self.initiateLogout()
+            }
+        }
+    }
+    
+    //MARK: - Logical Methods
+    func initiateLogout(){
+        removeCookies()
+        let prefs = UserDefaults.standard
+        prefs.removeObject(forKey:"gitToken")
+        tableView.isHidden = true
+        repos.removeAll()
+        self.loginBtn.isHidden = false
+        updateLogoutBtn()
+    }
+    func removeCookies() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+    
+    func updateLogoutBtn() {
+        logoutBarBtn.isHidden = !logoutBarBtn.isHidden
+        self.title = logoutBarBtn.isHidden ? "GitHub" : "Repositories"
+    }
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+          self.refreshControl.endRefreshing()
+          fetchRepos(accessToken: token)
+      }
 }
-
+//MARK: - Tableview Datasource and Delegate
 extension RepositoryVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.repos.count
@@ -101,21 +171,7 @@ extension RepositoryVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let repo = self.repos[indexPath.row]
         self.performSegue(withIdentifier: "BranchSegue", sender: repo)
+            tableView.deselectRow(at: indexPath, animated: true)
 
-//        guard let path = file.path else { return }
-//        
-//        if file.type == "file" {
-//            let storyboard = UIStoryboard(name: "RepositoryFileVC", bundle: nil)
-//            let repositoryFileVC = storyboard.instantiateViewController(withIdentifier: "RepositoryFileVC") as! RepositoryFileVC
-//            repositoryFileVC.path = path
-//            repositoryFileVC.token = token
-//            self.navigationController?.pushViewController(repositoryFileVC, animated: true)
-//        } else if file.type == "dir" {
-//            let storyboard = UIStoryboard(name: "RepositoryVC", bundle: nil)
-//            let repositoryVC = storyboard.instantiateViewController(withIdentifier: "RepositoryVC") as! RepositoryVC
-//            repositoryVC.path = path
-//            repositoryVC.token = token
-//            self.navigationController?.pushViewController(repositoryVC, animated: true)
-//        }
     }
 }

@@ -12,6 +12,7 @@ public struct PullRequestResponse: Codable {
     public let number: Int?
     public let title : String?
     public let state : String?
+    public let mergedAt : String?
     public let body : String?
 
     enum CodingKeys: String, CodingKey {
@@ -19,6 +20,7 @@ public struct PullRequestResponse: Codable {
         case title
         case state
         case body
+        case mergedAt = "merged_at"
     }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -26,5 +28,7 @@ public struct PullRequestResponse: Codable {
         title = try values.decodeIfPresent(String.self, forKey: .title)
         state = try values.decodeIfPresent(String.self, forKey: .state)
         body = try values.decodeIfPresent(String.self, forKey: .body)
+        mergedAt = try values.decodeIfPresent(String.self, forKey: .mergedAt)
+
     }
 }

@@ -14,6 +14,7 @@ class PullRequestCell: UITableViewCell {
     @IBOutlet weak var bodyLbl: UILabel!
     @IBOutlet weak var numberLbl: UILabel!
     @IBOutlet weak var statusLbl: UILabel!
+    @IBOutlet weak var approvedIcon: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
