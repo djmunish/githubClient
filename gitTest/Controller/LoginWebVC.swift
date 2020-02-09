@@ -62,6 +62,7 @@ class LoginWebVC: UIViewController {
     */
 
 }
+//MARK: - WebView Delegates
 extension LoginWebVC: WKNavigationDelegate {
  
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

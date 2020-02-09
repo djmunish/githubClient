@@ -40,6 +40,8 @@ class PullRequestVC: UIViewController {
         self.refreshControl.endRefreshing()
         fetchPullRequests()
     }
+    
+    //MARK: - API
     func fetchPullRequests(){
         GithubAPI.gitClient.getPullRequests(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "", branch: branch.name ?? "") { (response, err) in
             self.pullRequest = response ?? []
@@ -155,6 +157,7 @@ extension PullRequestVC: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+//MARK: - UIViewController Extensions
 extension UIViewController {
     static var topMostViewController : UIViewController {
         get {

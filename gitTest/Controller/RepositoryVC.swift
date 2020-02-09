@@ -38,7 +38,7 @@ public enum Scopes : String {
 class RepositoryVC: UIViewController {
     var token: String! = UserDefaults.standard.value(forKey: "gitToken") as? String ?? ""
     var repos: [RepositoryResponse] = []
-
+    
     @IBOutlet weak var loaderView: Loader!
     @IBOutlet weak var logoutItem: UIBarButtonItem!
     @IBOutlet weak var loginBtn: UIButton!
@@ -50,6 +50,7 @@ class RepositoryVC: UIViewController {
     }
     var refreshControl = UIRefreshControl()
     @IBOutlet weak var logoutBarBtn: UIButton!
+    @IBOutlet weak var noRepoLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,19 +74,24 @@ class RepositoryVC: UIViewController {
         
         // Do any additional setup after loading the view.
     }
-  
+    
     
     //MARK: - API
     func fetchRepos(accessToken: String){
-        print("ac Token---->\(accessToken)")
         GithubAPI.gitClient.getRepos(accesstoken: accessToken) { (response, err) in
             self.repos = response ?? []
             DispatchQueue.main.async {
-                if self.loaderView.activityLoader.isAnimating{
-                    self.loaderView.isHidden = true
+                if(self.repos.count>0){
+                    self.noRepoLbl.isHidden = true
+                    if self.loaderView.activityLoader.isAnimating{
+                        self.loaderView.isHidden = true
+                    }
+                    self.tableView.reloadData()
+                    self.tableView.isHidden = false
                 }
-                self.tableView.reloadData()
-                self.tableView.isHidden = false
+                else{
+                    self.noRepoLbl.isHidden = false
+                }
             }
         }
     }
@@ -95,7 +101,7 @@ class RepositoryVC: UIViewController {
         if(segue.identifier == "BranchSegue") {
             let destinationViewController = (segue.destination as! BranchVC)
             destinationViewController.accessToken = token
-            destinationViewController.repo = sender as! RepositoryResponse
+            destinationViewController.repo = (sender as! RepositoryResponse)
         }
     }
     
@@ -107,7 +113,7 @@ class RepositoryVC: UIViewController {
             UserDefaults.standard.setValue(accessToken, forKey: "gitToken")
             self.fetchRepos(accessToken: self.token)
             self.updateLogoutBtn()
-
+            
         }, error: { error in
             print(error.localizedDescription)
         })
@@ -125,13 +131,19 @@ class RepositoryVC: UIViewController {
     //MARK: - Logical Methods
     func initiateLogout(){
         removeCookies()
-        let prefs = UserDefaults.standard
-        prefs.removeObject(forKey:"gitToken")
+        clearData()
         tableView.isHidden = true
-        repos.removeAll()
         self.loginBtn.isHidden = false
         updateLogoutBtn()
     }
+    
+    func clearData(){
+        let prefs = UserDefaults.standard
+        prefs.removeObject(forKey:"gitToken")
+        repos.removeAll()
+        self.token = ""
+    }
+    
     func removeCookies() {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
@@ -147,9 +159,9 @@ class RepositoryVC: UIViewController {
     }
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-          self.refreshControl.endRefreshing()
-          fetchRepos(accessToken: token)
-      }
+        self.refreshControl.endRefreshing()
+        fetchRepos(accessToken: token)
+    }
 }
 //MARK: - Tableview Datasource and Delegate
 extension RepositoryVC: UITableViewDelegate, UITableViewDataSource {
@@ -171,7 +183,7 @@ extension RepositoryVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let repo = self.repos[indexPath.row]
         self.performSegue(withIdentifier: "BranchSegue", sender: repo)
-            tableView.deselectRow(at: indexPath, animated: true)
-
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 }

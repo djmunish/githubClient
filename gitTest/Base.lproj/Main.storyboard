@@ -133,6 +133,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Repository Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97G-wi-rNp">
+                                <rect key="frame" x="126" y="436.5" width="162.5" height="23.5"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -143,6 +149,7 @@
                             <constraint firstItem="jlt-Rk-vOk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MnD-uL-4es"/>
                             <constraint firstItem="jlt-Rk-vOk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" symbolic="YES" id="WS1-mQ-H0y"/>
                             <constraint firstItem="Fdz-VO-E6v" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="YLR-0M-HBt"/>
+                            <constraint firstItem="97G-wi-rNp" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZOl-k8-3DJ"/>
                             <constraint firstItem="JKT-Yk-hz6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="e4h-U7-E5s"/>
                             <constraint firstItem="wKw-hX-8pi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gTH-yq-5Ci"/>
                             <constraint firstItem="jlt-Rk-vOk" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="j1f-3j-agv"/>
@@ -150,6 +157,7 @@
                             <constraint firstItem="Fdz-VO-E6v" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="oq0-gG-FPw"/>
                             <constraint firstItem="jVZ-Bt-myV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sfK-iQ-hLY"/>
                             <constraint firstItem="JKT-Yk-hz6" firstAttribute="top" secondItem="jVZ-Bt-myV" secondAttribute="bottom" constant="40" id="tal-s2-car"/>
+                            <constraint firstItem="97G-wi-rNp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="w3b-qy-qvB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -171,6 +179,7 @@
                         <outlet property="loginBtn" destination="JKT-Yk-hz6" id="Z9g-SW-ObX"/>
                         <outlet property="logoutBarBtn" destination="zQM-I5-981" id="Vyk-93-sKY"/>
                         <outlet property="logoutItem" destination="a8z-9a-lWK" id="mlb-Ld-eLM"/>
+                        <outlet property="noRepoLbl" destination="97G-wi-rNp" id="oE2-xI-TSO"/>
                         <outlet property="tableView" destination="jlt-Rk-vOk" id="zsc-TG-LAu"/>
                         <segue destination="CM5-gX-2Es" kind="show" identifier="BranchSegue" id="fRF-Ea-Zjf"/>
                     </connections>
@@ -214,12 +223,15 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7l8-pX-D34">
-                                                    <rect key="frame" x="355" y="84.5" width="44" height="24"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7l8-pX-D34">
+                                                    <rect key="frame" x="355" y="74.5" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="2cS-vl-fNW"/>
+                                                        <constraint firstAttribute="width" secondItem="7l8-pX-D34" secondAttribute="height" id="HN1-CL-Rew"/>
                                                     </constraints>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                                    <state key="normal" image="info"/>
                                                     <connections>
                                                         <action selector="infoButtonPressed:" destination="xql-bE-6ut" eventType="touchUpInside" id="YyB-3L-Jeo"/>
                                                     </connections>
@@ -253,13 +265,21 @@
                                     <constraint firstAttribute="height" constant="250" id="emm-EZ-jl1"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Branch Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xZ3-DZ-vBT">
+                                <rect key="frame" x="140" y="436.5" width="134" height="23.5"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="5oS-Ct-41n" firstAttribute="centerY" secondItem="wuy-QT-Bzp" secondAttribute="centerY" id="3xA-lz-OCQ"/>
+                            <constraint firstItem="xZ3-DZ-vBT" firstAttribute="centerX" secondItem="wuy-QT-Bzp" secondAttribute="centerX" id="9hi-gE-D0I"/>
                             <constraint firstItem="KMy-4W-p6y" firstAttribute="leading" secondItem="P1Z-mj-4xS" secondAttribute="leading" id="9zY-6l-Qd3"/>
                             <constraint firstItem="bMF-lh-iCt" firstAttribute="centerY" secondItem="wuy-QT-Bzp" secondAttribute="centerY" id="FFQ-op-KBf"/>
                             <constraint firstItem="KMy-4W-p6y" firstAttribute="top" secondItem="P1Z-mj-4xS" secondAttribute="top" id="K1h-mT-lsi"/>
+                            <constraint firstItem="xZ3-DZ-vBT" firstAttribute="centerY" secondItem="wuy-QT-Bzp" secondAttribute="centerY" id="Kt0-PC-w0u"/>
                             <constraint firstItem="P1Z-mj-4xS" firstAttribute="bottom" secondItem="KMy-4W-p6y" secondAttribute="bottom" id="bXI-f3-g9N"/>
                             <constraint firstItem="5oS-Ct-41n" firstAttribute="leading" secondItem="P1Z-mj-4xS" secondAttribute="leading" constant="30" id="fye-qV-uf8"/>
                             <constraint firstItem="5oS-Ct-41n" firstAttribute="centerX" secondItem="wuy-QT-Bzp" secondAttribute="centerX" id="lu0-vp-C3E"/>
@@ -272,6 +292,7 @@
                     <connections>
                         <outlet property="activityLoader" destination="bMF-lh-iCt" id="GBO-BK-esk"/>
                         <outlet property="detailPopup" destination="5oS-Ct-41n" id="hHQ-hy-wSL"/>
+                        <outlet property="noBranchLbl" destination="xZ3-DZ-vBT" id="e0O-OA-H1J"/>
                         <outlet property="tableView" destination="KMy-4W-p6y" id="FGl-96-nhe"/>
                         <segue destination="g98-Ka-Zhs" kind="show" identifier="PullSegue" id="r1Z-ac-eyz"/>
                     </connections>
@@ -517,6 +538,7 @@
         <image name="exit" width="32" height="32"/>
         <image name="fork" width="256" height="256"/>
         <image name="github" width="256" height="256"/>
+        <image name="info" width="256" height="256"/>
         <image name="prIcon" width="450" height="600"/>
         <image name="tick" width="256" height="256"/>
         <image name="user" width="256" height="256"/>

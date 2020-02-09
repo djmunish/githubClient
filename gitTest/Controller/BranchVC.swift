@@ -22,7 +22,8 @@ class BranchVC: UIViewController {
     var repo:RepositoryResponse!
     var accessToken:String!
     var refreshControl = UIRefreshControl()
-
+    
+    @IBOutlet weak var noBranchLbl: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchBranches()
@@ -39,13 +40,22 @@ class BranchVC: UIViewController {
         self.refreshControl.endRefreshing()
         fetchBranches()
     }
+    
+    //MARK: - API
     func fetchBranches(){
         GithubAPI.gitClient.getBranches(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "") { (response, err) in
             self.branches = response ?? []
             DispatchQueue.main.async {
-                self.activityLoader.stopAnimating()
-                self.tableView.reloadData()
-                self.tableView.isHidden = false
+                if self.branches.count>0
+                {
+                    self.noBranchLbl.isHidden = true
+                    self.activityLoader.stopAnimating()
+                    self.tableView.reloadData()
+                    self.tableView.isHidden = false
+                }
+                else{
+                    self.noBranchLbl.isHidden = false
+                }
             }
         }
     }
@@ -66,12 +76,13 @@ class BranchVC: UIViewController {
         detailPopup.shaLbl.text = commit.sha
     }
     
+    //MARK: - Prepare Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "PullSegue") {
             let destinationViewController = (segue.destination as! PullRequestVC)
             destinationViewController.accessToken = accessToken
             destinationViewController.repo = repo
-            destinationViewController.branch = sender as! BranchResponse
+            destinationViewController.branch = (sender as! BranchResponse)
         }
     }
     
@@ -104,7 +115,7 @@ extension BranchVC: UITableViewDelegate, UITableViewDataSource {
         let branch = self.branches[indexPath.row]
         self.performSegue(withIdentifier: "PullSegue", sender: branch)
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
     }
 }
 extension BranchVC: BranchCellDelegate {

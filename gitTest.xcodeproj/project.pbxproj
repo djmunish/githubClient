@@ -161,7 +161,6 @@
 				58DB5BBF23EB81D300AFCAAA /* Views */,
 				588BC94523E9FD5B00AEF16F /* AppDelegate.swift */,
 				588BC94723E9FD5B00AEF16F /* SceneDelegate.swift */,
-				58E219C323EB33AD0059899B /* TableView Cells */,
 				58E2197123EA37560059899B /* Models */,
 				58E2196D23EA35780059899B /* Helper */,
 				58E2196C23EA356F0059899B /* Controller */,
@@ -194,6 +193,7 @@
 		58DB5BBF23EB81D300AFCAAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58E219C323EB33AD0059899B /* TableView Cells */,
 				580BA23323EF5EE60088F47A /* Loader */,
 				58DB5BC023EB81D800AFCAAA /* Popup */,
 			);
@@ -613,7 +613,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstage.onni.gitTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.gitTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -631,7 +631,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstage.onni.gitTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.gitTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

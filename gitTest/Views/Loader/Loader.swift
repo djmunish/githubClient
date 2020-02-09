@@ -31,12 +31,8 @@ class Loader: UIView {
         Bundle.main.loadNibNamed(kLoader_XIB_NAME, owner: self, options: nil)
         addSubview(contentView)
         contentView.frame = self.bounds
-//        messageLblPlcHolder.textColor = UIColor(named: "LabelText")
-//        shaLblPlcHolder.textColor = UIColor(named: "LabelText")
-//        messageLbl.textColor = UIColor(named: "LabelText")
-//        shaLbl.textColor = UIColor(named: "LabelText")
+        title.textColor = UIColor(named: "LabelText")
     }
-    
     func loaderMessage(message: String) {
         title.text = message
     }
