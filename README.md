@@ -21,7 +21,7 @@ A simple app that fetches info from Github account.
 6) The app can post a ```status``` for selected pull request so we can see it from the Web interface
 as well. Only pull requests which have ```pending``` status, can not change status for already ```approved``` or ```rejected``` PR.
 7) ```Pull to refresh``` on every screen to fetch latest changes for database.
-
+8) Supports Dark mode too 🌙
 
 
 ### Installing the app
