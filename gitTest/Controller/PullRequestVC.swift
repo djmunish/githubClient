@@ -44,17 +44,26 @@ class PullRequestVC: UIViewController {
     //MARK: - API
     func fetchPullRequests(){
         GithubAPI.gitClient.getPullRequests(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "", branch: branch.name ?? "") { (response, err) in
-            self.pullRequest = response ?? []
-            DispatchQueue.main.async {
-                self.loaderView.isHidden = true
-                self.activityLoader.stopAnimating()
-                if(self.pullRequest.count>0){
-                    self.noPRLbl.isHidden = true
-                    self.tableView.reloadData()
-                    self.tableView.isHidden = false
-                }
-                else{
+            if (err != nil){
+                DispatchQueue.main.async {
+                    self.activityLoader.stopAnimating()
                     self.noPRLbl.isHidden = false
+                    self.noPRLbl.text = err?.localizedDescription
+                    self.tableView.isHidden = true
+                }
+            }else{self.pullRequest = response ?? []
+                DispatchQueue.main.async {
+                    self.loaderView.isHidden = true
+                    self.activityLoader.stopAnimating()
+                    if(self.pullRequest.count>0){
+                        self.noPRLbl.isHidden = true
+                        self.tableView.reloadData()
+                        self.tableView.isHidden = false
+                    }
+                    else{
+                        self.noPRLbl.isHidden = false
+                        self.noPRLbl.text = "No Pull Request Found"
+                    }
                 }
             }
         }
@@ -64,9 +73,18 @@ class PullRequestVC: UIViewController {
         loaderView.isHidden = false
         self.loaderView.loaderMessage(message: "Updating...")
         GithubAPI.gitClient.rejectPRStatus(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "" , prNumber: pullReq.number ?? 0) { (res, err) in
-            DispatchQueue.main.async {
+            if(err != nil){
+                DispatchQueue.main.async {
+                    self.loaderView.isHidden = true
+                    self.noPRLbl.isHidden = false
+                    self.noPRLbl.text = err?.localizedDescription
+                    self.tableView.isHidden = true
+                }
+            }else{
+                DispatchQueue.main.async {
                 self.loaderView.isHidden = true
                 self.rejectPRAPIAlert()
+                }
             }
         }
     }
@@ -75,9 +93,17 @@ class PullRequestVC: UIViewController {
         loaderView.isHidden = false
         self.loaderView.loaderMessage(message: "Updating...")
         self.tableView.isHidden = true
-        self.activityLoader.startAnimating()
         GithubAPI.gitClient.updatePRStatus(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name!, prNumber: pullReq.number ?? 0) { (res, err) in
-            self.fetchPullRequests()
+            if(err != nil){
+                DispatchQueue.main.async {
+                self.loaderView.isHidden = true
+                self.noPRLbl.isHidden = false
+                self.noPRLbl.text = err?.localizedDescription
+                self.tableView.isHidden = true
+                }
+            }else{
+                self.fetchPullRequests()
+            }
         }
     }
     
@@ -91,7 +117,11 @@ class PullRequestVC: UIViewController {
     
     func openGitReadMoreLink(){
         let safariVC = SFSafariViewController(url: URL(string: "https://developer.github.com/v3/pulls/#update-a-pull-request")! as URL)
-        safariVC.modalPresentationStyle = .automatic
+        if #available(iOS 13.0, *) {
+            safariVC.modalPresentationStyle = .automatic
+        } else {
+            // Fallback on earlier versions
+        }
         self.present(safariVC, animated: true, completion: nil)
     }
 

@@ -133,8 +133,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Repository Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97G-wi-rNp">
-                                <rect key="frame" x="126" y="436.5" width="162.5" height="23.5"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Repository Found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97G-wi-rNp">
+                                <rect key="frame" x="20" y="436.5" width="374" height="23.5"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -147,6 +147,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jlt-Rk-vOk" secondAttribute="bottom" id="J7a-Oi-mBz"/>
                             <constraint firstItem="jVZ-Bt-myV" firstAttribute="top" secondItem="wKw-hX-8pi" secondAttribute="bottom" constant="25" id="Lqp-g6-ZKZ"/>
                             <constraint firstItem="jlt-Rk-vOk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MnD-uL-4es"/>
+                            <constraint firstItem="97G-wi-rNp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Ne8-sW-AxJ"/>
                             <constraint firstItem="jlt-Rk-vOk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" symbolic="YES" id="WS1-mQ-H0y"/>
                             <constraint firstItem="Fdz-VO-E6v" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="YLR-0M-HBt"/>
                             <constraint firstItem="97G-wi-rNp" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZOl-k8-3DJ"/>
@@ -163,7 +164,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="GitHub" id="KFl-Kf-nPs">
                         <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="a8z-9a-lWK">
-                            <button key="customView" hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zQM-I5-981">
+                            <button key="customView" hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zQM-I5-981">
                                 <rect key="frame" x="330" y="0.0" width="64" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="exit"/>
@@ -175,12 +176,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="gitLogo" destination="jVZ-Bt-myV" id="1lz-hb-ggq"/>
                         <outlet property="loaderView" destination="Fdz-VO-E6v" id="ZsR-Q4-Bfe"/>
                         <outlet property="loginBtn" destination="JKT-Yk-hz6" id="Z9g-SW-ObX"/>
                         <outlet property="logoutBarBtn" destination="zQM-I5-981" id="Vyk-93-sKY"/>
                         <outlet property="logoutItem" destination="a8z-9a-lWK" id="mlb-Ld-eLM"/>
                         <outlet property="noRepoLbl" destination="97G-wi-rNp" id="oE2-xI-TSO"/>
                         <outlet property="tableView" destination="jlt-Rk-vOk" id="zsc-TG-LAu"/>
+                        <outlet property="welcomeLbl" destination="wKw-hX-8pi" id="zuJ-E5-imt"/>
                         <segue destination="CM5-gX-2Es" kind="show" identifier="BranchSegue" id="fRF-Ea-Zjf"/>
                     </connections>
                 </viewController>
@@ -265,8 +268,8 @@
                                     <constraint firstAttribute="height" constant="250" id="emm-EZ-jl1"/>
                                 </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Branch Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xZ3-DZ-vBT">
-                                <rect key="frame" x="140" y="436.5" width="134" height="23.5"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Branch Found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xZ3-DZ-vBT">
+                                <rect key="frame" x="20" y="436.5" width="374" height="23.5"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -280,6 +283,7 @@
                             <constraint firstItem="bMF-lh-iCt" firstAttribute="centerY" secondItem="wuy-QT-Bzp" secondAttribute="centerY" id="FFQ-op-KBf"/>
                             <constraint firstItem="KMy-4W-p6y" firstAttribute="top" secondItem="P1Z-mj-4xS" secondAttribute="top" id="K1h-mT-lsi"/>
                             <constraint firstItem="xZ3-DZ-vBT" firstAttribute="centerY" secondItem="wuy-QT-Bzp" secondAttribute="centerY" id="Kt0-PC-w0u"/>
+                            <constraint firstItem="xZ3-DZ-vBT" firstAttribute="leading" secondItem="P1Z-mj-4xS" secondAttribute="leading" constant="20" id="Llh-Wu-he4"/>
                             <constraint firstItem="P1Z-mj-4xS" firstAttribute="bottom" secondItem="KMy-4W-p6y" secondAttribute="bottom" id="bXI-f3-g9N"/>
                             <constraint firstItem="5oS-Ct-41n" firstAttribute="leading" secondItem="P1Z-mj-4xS" secondAttribute="leading" constant="30" id="fye-qV-uf8"/>
                             <constraint firstItem="5oS-Ct-41n" firstAttribute="centerX" secondItem="wuy-QT-Bzp" secondAttribute="centerX" id="lu0-vp-C3E"/>
@@ -395,8 +399,8 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="yZg-2E-Er7">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                             </activityIndicatorView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Pull Request Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOQ-3b-fWU">
-                                <rect key="frame" x="119.5" y="436.5" width="175.5" height="23.5"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Pull Request Found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOQ-3b-fWU">
+                                <rect key="frame" x="20" y="436.5" width="374" height="23.5"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -414,6 +418,7 @@
                         <constraints>
                             <constraint firstItem="8rx-Ki-O3r" firstAttribute="top" secondItem="Jr2-y8-wPi" secondAttribute="top" id="4md-4M-mrZ"/>
                             <constraint firstItem="wHR-KU-I4j" firstAttribute="centerY" secondItem="fOS-LY-wjZ" secondAttribute="centerY" id="Cpl-z0-9Kn"/>
+                            <constraint firstItem="NOQ-3b-fWU" firstAttribute="leading" secondItem="Jr2-y8-wPi" secondAttribute="leading" constant="20" id="EmH-Qd-8E0"/>
                             <constraint firstItem="wHR-KU-I4j" firstAttribute="centerX" secondItem="fOS-LY-wjZ" secondAttribute="centerX" id="EpA-6Q-9Kw"/>
                             <constraint firstItem="8rx-Ki-O3r" firstAttribute="leading" secondItem="Jr2-y8-wPi" secondAttribute="leading" id="IOj-3a-kt4"/>
                             <constraint firstItem="Jr2-y8-wPi" firstAttribute="trailing" secondItem="8rx-Ki-O3r" secondAttribute="trailing" id="Ond-9S-m0r"/>

@@ -44,17 +44,27 @@ class BranchVC: UIViewController {
     //MARK: - API
     func fetchBranches(){
         GithubAPI.gitClient.getBranches(accesstoken: accessToken, ownerName: repo.owner?.login ?? "", repoName: repo.name ?? "") { (response, err) in
-            self.branches = response ?? []
-            DispatchQueue.main.async {
-                if self.branches.count>0
-                {
-                    self.noBranchLbl.isHidden = true
+            if (err != nil){
+                DispatchQueue.main.async {
                     self.activityLoader.stopAnimating()
-                    self.tableView.reloadData()
-                    self.tableView.isHidden = false
-                }
-                else{
                     self.noBranchLbl.isHidden = false
+                    self.noBranchLbl.text = err?.localizedDescription
+                    self.tableView.isHidden = true
+                }
+            }else{
+                self.branches = response ?? []
+                DispatchQueue.main.async {
+                    if self.branches.count>0
+                    {
+                        self.noBranchLbl.isHidden = true
+                        self.activityLoader.stopAnimating()
+                        self.tableView.reloadData()
+                        self.tableView.isHidden = false
+                    }
+                    else{
+                        self.noBranchLbl.isHidden = false
+                        self.noBranchLbl.text = "No Branch Found"
+                    }
                 }
             }
         }

@@ -35,6 +35,7 @@ public enum Scopes : String {
     case writeGPGKey = "write:gpg_key"
     case adminGPGKey = "admin:gpg_key"
 }
+@available(iOS 11.0, *)
 class RepositoryVC: UIViewController {
     var token: String! = UserDefaults.standard.value(forKey: "gitToken") as? String ?? ""
     var repos: [RepositoryResponse] = []
@@ -51,6 +52,8 @@ class RepositoryVC: UIViewController {
     var refreshControl = UIRefreshControl()
     @IBOutlet weak var logoutBarBtn: UIButton!
     @IBOutlet weak var noRepoLbl: UILabel!
+    @IBOutlet weak var welcomeLbl: UILabel!
+    @IBOutlet weak var gitLogo: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,18 +82,30 @@ class RepositoryVC: UIViewController {
     //MARK: - API
     func fetchRepos(accessToken: String){
         GithubAPI.gitClient.getRepos(accesstoken: accessToken) { (response, err) in
-            self.repos = response ?? []
-            DispatchQueue.main.async {
-                if(self.repos.count>0){
-                    self.noRepoLbl.isHidden = true
-                    if self.loaderView.activityLoader.isAnimating{
-                        self.loaderView.isHidden = true
-                    }
-                    self.tableView.reloadData()
-                    self.tableView.isHidden = false
-                }
-                else{
+            if (err != nil){
+                DispatchQueue.main.async {
+                    self.loaderView.isHidden = true
                     self.noRepoLbl.isHidden = false
+                    self.noRepoLbl.text = err?.localizedDescription
+                    self.gitLogo.isHidden = true
+                    self.welcomeLbl.isHidden = true
+                    self.tableView.isHidden = true
+                }
+            }else{
+                self.repos = response ?? []
+                DispatchQueue.main.async {
+                    if(self.repos.count > 0){
+                        self.noRepoLbl.isHidden = true
+                        if self.loaderView.activityLoader.isAnimating{
+                            self.loaderView.isHidden = true
+                        }
+                        self.tableView.reloadData()
+                        self.tableView.isHidden = false
+                    }
+                    else{
+                        self.noRepoLbl.isHidden = false
+                        self.noRepoLbl.text = "No Repository Found"
+                    }
                 }
             }
         }
@@ -134,6 +149,8 @@ class RepositoryVC: UIViewController {
         clearData()
         tableView.isHidden = true
         self.loginBtn.isHidden = false
+        self.gitLogo.isHidden = false
+        self.welcomeLbl.isHidden = false
         updateLogoutBtn()
     }
     
@@ -164,6 +181,7 @@ class RepositoryVC: UIViewController {
     }
 }
 //MARK: - Tableview Datasource and Delegate
+@available(iOS 11.0, *)
 extension RepositoryVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.repos.count

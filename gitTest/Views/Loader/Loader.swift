@@ -31,7 +31,11 @@ class Loader: UIView {
         Bundle.main.loadNibNamed(kLoader_XIB_NAME, owner: self, options: nil)
         addSubview(contentView)
         contentView.frame = self.bounds
-        title.textColor = UIColor(named: "LabelText")
+        if #available(iOS 11.0, *) {
+            title.textColor = UIColor(named: "LabelText")
+        } else {
+            // Fallback on earlier versions
+        }
     }
     func loaderMessage(message: String) {
         title.text = message
