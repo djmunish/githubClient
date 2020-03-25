@@ -1,4 +1,4 @@
-# Aldo iOS Test - githubClient
+# Github Client
 A simple app that fetches info from Github account.
 
 ### Screenshots for various Screens
