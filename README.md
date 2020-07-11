@@ -12,6 +12,10 @@ A simple app that fetches info from Github account.
 <img src="https://github.com/djmunish/githubClient/blob/master/Preview/6.png" width="200" height="400" />
 </p>
 
+### Demo
+
+- https://appetize.io/app/j53pvz43eh04pgx6mc90h8pbm0
+
 ### Features
 1) Login into GitHub account. 
 2) The app displays all available ```repos``` for the account.
